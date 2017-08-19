@@ -1,0 +1,43 @@
+{
+  "name": "uni",
+  "version": "0.1.0",
+  "description": "Unidirection Data Flow Implementation",
+  "main": "uni.js",
+  "types": "typings/uni.d.ts",
+  "files": [
+    "typings"
+  ],
+  "directories": {
+    "doc": "docs",
+    "example": "examples"
+  },
+  "license": "MIT",
+  "homepage": "https://platinumcoin.github.io/uni",
+  "repository": "PlatinumCoin/uni",
+  "keywords": [
+    "flux",
+    "unidirectional"
+  ],
+  "contributors": [
+    "Alexey Raspopov",
+    "Vlad Yanchevsky"
+  ],
+  "scripts": {
+    "test": "jest",
+    "prepublish": "rollup --config rollup.config.js"
+  },
+  "devDependencies": {
+    "babel-core": "~6.26.0",
+    "babel-jest": "~20.0.3",
+    "babel-plugin-external-helpers": "~6.22.0",
+    "babel-preset-es2015": "~6.24.1",
+    "jest": "~20.0.4",
+    "rollup": "~0.47.6",
+    "rollup-plugin-babel": "~3.0.2"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  }
+}
