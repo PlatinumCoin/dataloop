@@ -23,7 +23,7 @@
     "Vlad Yanchevsky"
   ],
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "prepublish": "rollup --config rollup.config.js"
   },
   "devDependencies": {
