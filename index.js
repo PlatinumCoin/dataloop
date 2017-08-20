@@ -1,1 +1,1 @@
-export { default as Dispatcher } from './modules/Dispatcher';
+export { default as Dispatcher, DispatchPriority } from './modules/Dispatcher';
