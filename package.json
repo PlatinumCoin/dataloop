@@ -35,6 +35,9 @@
     "rollup": "~0.47.6",
     "rollup-plugin-babel": "~3.0.2"
   },
+  "peerDependencies": {
+    "react": "~16.0.0"
+  },
   "babel": {
     "presets": [
       "es2015"
