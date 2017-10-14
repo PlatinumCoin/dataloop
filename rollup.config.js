@@ -12,7 +12,7 @@ const babelConfig = {
 
 export default {
   entry: 'index.js',
-  dest: 'uni.js',
+  dest: 'dataloop.js',
   format: 'cjs',
   plugins: [babel(babelConfig)]
 };

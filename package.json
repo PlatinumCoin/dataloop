@@ -1,9 +1,9 @@
 {
-  "name": "uni",
+  "name": "dataloop",
   "version": "0.1.0",
   "description": "Unidirection Data Flow Implementation",
-  "main": "uni.js",
-  "types": "typings/uni.d.ts",
+  "main": "dataloop.js",
+  "types": "typings/dataloop.d.ts",
   "files": [
     "typings"
   ],
@@ -12,8 +12,8 @@
     "example": "examples"
   },
   "license": "MIT",
-  "homepage": "https://platinumcoin.github.io/uni",
-  "repository": "PlatinumCoin/uni",
+  "homepage": "https://platinumcoin.github.io/dataloop",
+  "repository": "PlatinumCoin/dataloop",
   "keywords": [
     "flux",
     "unidirectional"
