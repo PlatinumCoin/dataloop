@@ -3,8 +3,11 @@
   "version": "0.1.0",
   "description": "Unidirectional Data Flow Implementation",
   "main": "dataloop.js",
+  "module": "dataloop.module.js",
   "types": "typings/dataloop.d.ts",
   "files": [
+    "dataloop.js.flow",
+    "dataloop.module.js",
     "typings"
   ],
   "directories": {
@@ -24,20 +27,23 @@
   ],
   "scripts": {
     "test": "jest --coverage",
-    "prepublish": "rollup --config rollup.config.js"
+    "build:types": "cp typings/dataloop.js.flow ./",
+    "build:lib": "rollup --config configs/rollup.config.js",
+    "build:module": "rollup --config configs/rollup.config.module.js",
+    "prepublish": "npm test; npm run build:lib; npm run build:module; npm run build:types"
   },
   "devDependencies": {
     "babel-core": "~6.26.0",
     "babel-jest": "~20.0.3",
     "babel-plugin-external-helpers": "~6.22.0",
-    "babel-preset-es2015": "~6.24.1",
+    "babel-preset-env": "~1.6.0",
     "jest": "~20.0.4",
     "rollup": "~0.47.6",
     "rollup-plugin-babel": "~3.0.2"
   },
   "babel": {
     "presets": [
-      "es2015"
+      "env"
     ]
   }
 }

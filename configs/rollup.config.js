@@ -1,14 +1,5 @@
 import babel from 'rollup-plugin-babel';
-
-const babelConfig = {
-  babelrc: false,
-  presets: [
-    ['es2015', { modules: false }]
-  ],
-  plugins: [
-    'external-helpers'
-  ]
-};
+import babelConfig from './babel.config';
 
 export default {
   entry: 'index.js',
