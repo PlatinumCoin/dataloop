@@ -1,7 +1,7 @@
 {
   "name": "dataloop",
   "version": "0.1.0",
-  "description": "Unidirection Data Flow Implementation",
+  "description": "Unidirectional Data Flow Implementation",
   "main": "dataloop.js",
   "types": "typings/dataloop.d.ts",
   "files": [
