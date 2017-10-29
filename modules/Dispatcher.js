@@ -1,4 +1,4 @@
-import Heap from './Heap';
+import OrderedSet from './OrderedSet';
 
 export const DispatchPriority = {
   Persistence: 0,
@@ -7,7 +7,7 @@ export const DispatchPriority = {
 
 export default class Dispatcher {
   constructor() {
-    this.listeners = new Heap((a, b) => a.priority > b.priority ? -1 : 1);
+    this.listeners = new OrderedSet((a, b) => a.priority < b.priority ? -1 : 1);
     this.isDispatching = false;
   }
 
@@ -32,9 +32,7 @@ export default class Dispatcher {
   }
 
   register(listener) {
-    if (!this.listeners.includes(listener)) {
-      this.listeners.insert(listener);
-    }
+    this.listeners.insert(listener);
   }
 
   unregister(listener) {
