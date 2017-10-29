@@ -1,6 +1,6 @@
 {
   "name": "dataloop",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Unidirectional Data Flow Implementation",
   "main": "dataloop.js",
   "module": "dataloop.module.js",

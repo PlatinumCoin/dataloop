@@ -1,3 +1,9 @@
+## dataloop v0.1.1
+
+**Bug Fixes**:
+
+ * Fixed [Dispatcher][dispatcher]'s internal priorities mechanism ([#7](https://github.com/PlatinumCoin/dataloop/pull/7))
+
 ## dataloop v0.1.0
 
 **New Features**:
