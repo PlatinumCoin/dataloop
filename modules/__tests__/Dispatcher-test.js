@@ -1,7 +1,9 @@
+jest.mock('../AsyncQueue');
+
 import Dispatcher from '../Dispatcher';
 
-describe('Dispatcher', () => {
-  it('should execute listeners', () => {
+describe('Dispatcher', async () => {
+  it('should execute listeners', async () => {
     const dispatcher = new Dispatcher();
     const listenerA = { receive: jest.fn() };
     const listenerB = { receive: jest.fn() };
@@ -10,12 +12,13 @@ describe('Dispatcher', () => {
     dispatcher.register(listenerA);
     dispatcher.register(listenerB);
     dispatcher.dispatch(payload);
+    await dispatcher.spawn();
 
     expect(listenerA.receive).toHaveBeenCalledWith(payload);
     expect(listenerB.receive).toHaveBeenCalledWith(payload);
   });
 
-  it('should execute listeners in order of their priority', () => {
+  it('should execute listeners in order of their priority', async () => {
     const dispatcher = new Dispatcher();
     const history = [];
     const listenerA = { receive: jest.fn(() => history.push(0)), priority: 0 };
@@ -27,11 +30,12 @@ describe('Dispatcher', () => {
     dispatcher.register(listenerB);
     dispatcher.register(listenerC);
     dispatcher.dispatch(payload);
+    await dispatcher.spawn();
 
     expect(history).toEqual([0, 1, 2]);
   });
 
-  it('should not register a listener twice', () => {
+  it('should not register a listener twice', async () => {
     const dispatcher = new Dispatcher();
     const listener = { receive: jest.fn() };
     const payload = { name: 'Liza' };
@@ -39,24 +43,28 @@ describe('Dispatcher', () => {
     dispatcher.register(listener);
     dispatcher.register(listener);
     dispatcher.dispatch(payload);
+    await dispatcher.spawn();
 
     expect(listener.receive).toHaveBeenCalledTimes(1);
   });
 
-  it('should throw on nested dispatch', () => {
+  it('should allow nested dispatches', async () => {
     const dispatcher = new Dispatcher();
-    const error = new Error('Cannot dispatch in the middle of dispatch');
-    const listener = { receive: jest.fn(() => dispatcher.dispatch({})) };
-    const payload = { name: 'Liza' };
+    const payloadA = { name: 'Liza' };
+    const payloadB = { name: 'Ann' };
+    const listener = { receive: jest.fn((payload) => {
+      if (payload === payloadA) dispatcher.dispatch(payloadB);
+    }) };
 
-    spyOn(console, 'error');
     dispatcher.register(listener);
-    dispatcher.dispatch(payload)
+    dispatcher.dispatch(payloadA);
+    await dispatcher.spawn();
 
-    expect(console.error).toHaveBeenCalledWith(listener, error);
+    expect(listener.receive).toHaveBeenCalledWith(payloadA);
+    expect(listener.receive).toHaveBeenCalledWith(payloadB);
   });
 
-  it('should not stop dispatch on failure', () => {
+  it('should not stop dispatch on failure', async () => {
     const dispatcher = new Dispatcher();
     const error = new Error('Oops');
     const listenerA = { receive: jest.fn(() => { throw error; }) };
@@ -67,12 +75,13 @@ describe('Dispatcher', () => {
     dispatcher.register(listenerA);
     dispatcher.register(listenerB);
     dispatcher.dispatch(payload);
+    await dispatcher.spawn();
 
     expect(console.error).toHaveBeenCalledWith(listenerA, error);
     expect(listenerB.receive).toHaveBeenCalledWith(payload);
   });
 
-  it('should unregister listeners', () => {
+  it('should unregister listeners', async () => {
     const dispatcher = new Dispatcher();
     const listenerA = { receive: jest.fn() };
     const listenerB = { receive: jest.fn() };
@@ -82,6 +91,7 @@ describe('Dispatcher', () => {
     dispatcher.register(listenerB);
     dispatcher.unregister(listenerA);
     dispatcher.dispatch(payload);
+    await dispatcher.spawn();
 
     expect(listenerA.receive).not.toHaveBeenCalled();
     expect(listenerB.receive).toHaveBeenCalledWith(payload);
