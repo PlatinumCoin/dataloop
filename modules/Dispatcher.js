@@ -1,3 +1,4 @@
+import AsyncQueue from './AsyncQueue';
 import OrderedSet from './OrderedSet';
 
 export const DispatchPriority = {
@@ -7,28 +8,12 @@ export const DispatchPriority = {
 
 export default class Dispatcher {
   constructor() {
+    this.actions = new AsyncQueue();
     this.listeners = new OrderedSet((a, b) => a.priority < b.priority ? -1 : 1);
-    this.isDispatching = false;
   }
 
   dispatch(action) {
-    if (this.isDispatching) {
-      throw new Error('Cannot dispatch in the middle of dispatch');
-    }
-
-    this.isDispatching = true;
-
-    for (let index = 0; index < this.listeners.length; index++) {
-      const listener = this.listeners.get(index);
-
-      try {
-        listener.receive(action);
-      } catch (error) {
-        console.error(listener, error);
-      }
-    }
-
-    this.isDispatching = false;
+    this.actions.enqueue(action);
   }
 
   register(listener) {
@@ -37,5 +22,29 @@ export default class Dispatcher {
 
   unregister(listener) {
     this.listeners.delete(listener);
+  }
+
+  spawn() {
+    function dispatchAction(action, listeners) {
+      for (let index = 0; index < listeners.length; index++) {
+        const listener = listeners.get(index);
+        try {
+          listener.receive(action);
+        } catch (error) {
+          console.error(listener, error);
+        }
+      }
+    }
+
+    function processNextAction(queue, listeners) {
+      return queue.next().then(({ value, done }) => {
+        if (!done && value) {
+          dispatchAction(value, listeners);
+          return processNextAction(queue, listeners);
+        }
+      });
+    }
+
+    return processNextAction(this.actions, this.listeners);
   }
 }
