@@ -96,4 +96,12 @@ describe('Dispatcher', async () => {
     expect(listenerA.receive).not.toHaveBeenCalled();
     expect(listenerB.receive).toHaveBeenCalledWith(payload);
   });
+
+  it('should instantiate dispatcher with its lifecycle', () => {
+    jest.spyOn(Dispatcher.prototype, 'spawn');
+    const dispatcher = Dispatcher.create();
+
+    expect(dispatcher).toBeInstanceOf(Dispatcher);
+    expect(dispatcher.spawn).toHaveBeenCalled();
+  });
 });
