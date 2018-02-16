@@ -7,6 +7,12 @@ export const DispatchPriority = {
 };
 
 export default class Dispatcher {
+  static create() {
+    const instance = new this();
+    instance.spawn();
+    return instance;
+  }
+
   constructor() {
     this.actions = new AsyncQueue();
     this.listeners = new OrderedSet((a, b) => a.priority < b.priority ? -1 : 1);
